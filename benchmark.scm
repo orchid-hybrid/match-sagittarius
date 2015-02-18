@@ -1,21 +1,25 @@
 (map load '("trie.sld" "compile-pattern.sld" "interpret-tree.sld" "match.sld"))
 
 (import (time) (match) (rename (match pattern) (match m:match))
-        (math random)
+        ;; (math random)
         (srfi :1))
 
-(define rng (pseudo-random RC4 :seed 3652248))
+;; (define rng (pseudo-random RC4 :seed 3652248))
 
-(define (randomly . l)
+(define (randomly n . l)
+  #;
   (let ((i (random rng (length l))))
+    (list-ref l i))
+  ;; produce the same result
+  (let ((i (mod n (length l))))
     (list-ref l i)))
 
 (define (g n)
   (if (<= n 1)
-      (randomly 'true 'false)
-      (case (randomly 'unary 'binary)
+      (randomly n 'true 'false)
+      (case (randomly n 'unary 'binary)
         ((unary) `(not ,(g (- n 1))))
-        ((binary) (let ((p (randomly 'and 'or)))
+        ((binary) (let ((p (randomly n 'and 'or)))
                     `(,p ,(g (- n 2)) ,(g (- n 2))))))))
 
 
@@ -86,14 +90,14 @@
       ))
 
 (define (go-b evb-version)
-  (set! rng (pseudo-random RC4 :seed 3652248))
-  (time  (begin
-           (repeat 100 (lambda () (evb-version (g 4))))
-           (repeat 200 (lambda () (evb-version (g 8))))
-           (repeat 400 (lambda () (evb-version (g 16))))
-           (repeat 800 (lambda () (evb-version (g 32))))
-           )))
+  ;; (set! rng (pseudo-random RC4 :seed 3652248))
+  (time (repeat 100 (lambda () (evb-version (g 4)))))
+  (time (repeat 200 (lambda () (evb-version (g 8)))))
+  (time (repeat 400 (lambda () (evb-version (g 16)))))
+  (time (repeat 800 (lambda () (evb-version (g 32))))))
 
+(go-b evb)
+(go-b m:evb)
 
 ;; $ rlwrap sagittarius
 ;; sash> (load "benchmark.scm")
@@ -108,6 +112,33 @@
 ;; ;;  (begin (repeat 100 (lambda () (evb-version (g 4)))) (repeat 200 (lambda () (evb-version (g 8)))) (repeat 400 (lambda () (evb-version (g 16)))) (repeat 800 (lambda () (evb-version (g 32)))))
 ;; ;;  5.997716 real    16.789998 user    0.016667 sys
 ;; #t
+
+;; modified result
+;; % /opt/bin/sash benchmark.scm
+
+;;  (repeat 100 (lambda () (evb-version (g 4))))
+;;  0.000000 real    0.000000 user    0.000000 sys
+
+;;  (repeat 200 (lambda () (evb-version (g 8))))
+;;  0.010000 real    0.015000 user    0.000000 sys
+
+;;  (repeat 400 (lambda () (evb-version (g 16))))
+;;  0.280000 real    0.375000 user    0.000000 sys
+
+;;  (repeat 800 (lambda () (evb-version (g 32))))
+;;  137.366201 real    165.1740 user    4.804000 sys
+
+;;  (repeat 100 (lambda () (evb-version (g 4))))
+;;  0.000000 real    0.000000 user    0.000000 sys
+
+;;  (repeat 200 (lambda () (evb-version (g 8))))
+;;  0.000000 real    0.000000 user    0.000000 sys
+
+;;  (repeat 400 (lambda () (evb-version (g 16))))
+;;  0.150000 real    0.156000 user    0.000000 sys
+
+;;  (repeat 800 (lambda () (evb-version (g 32))))
+;;  73.992105 real    79.74700 user    1.389000 sys
 
 
 ;; this matcher is 0.2s faster in the boolean benchmark
