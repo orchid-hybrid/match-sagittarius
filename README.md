@@ -4,6 +4,8 @@ This library implements a pattern matcher macro `match` in R7RS scheme + er-macr
 
 The pattern matcher is based on compiling patterns into instruction sequences that get merged into a tree as an optimization. The pattern syntax is quasiquoted forms.
 
+I was very happy to see it benchmarked on [時の羅針盤＠blog](http://compassoftime.blogspot.co.uk/2015/02/benchmark-of-2-match-libraries.html). Thank you!
+
 # Files
 
 * `trie.sld` and `trie.scm` implements the algorithm to merge a list of sequences into a tree.
