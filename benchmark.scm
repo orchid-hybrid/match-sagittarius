@@ -86,6 +86,7 @@
       ))
 
 (define (go-b evb-version)
+  (set! rng (pseudo-random RC4 :seed 3652248))
   (time  (begin
            (repeat 100 (lambda () (evb-version (g 4))))
            (repeat 200 (lambda () (evb-version (g 8))))
@@ -128,6 +129,28 @@
 ;;  5.825319 real    15.783332 user    0.023333 sys
 ;;  5.976858 real    16.643331 user    0.016666 sys
 ;;  5.694204 real    15.463332 user    0.020000 sys
+
+
+
+;; !!!! oops forgot to reset the seed.. added this now..
+
+;; evb
+;;  5.840854 real    16.933332 user    0.033333 sys
+;;  5.916212 real    17.149999 user    0.023333 sys
+;;  5.864864 real    16.999998 user    0.013333 sys
+;;  6.070173 real    17.699999 user    0.026666 sys
+;;  5.752438 real    16.183332 user    0.020000 sys
+;;  5.739199 real    16.149999 user    0.030000 sys
+
+
+;; m:evb
+;;  5.638897 real    16.153331 user    0.016667 sys
+;;  5.614863 real    16.119998 user    0.006667 sys
+;;  5.716652 real    16.593332 user    0.036667 sys
+;;  5.578677 real    15.749998 user    0.013334 sys
+;;  5.544080 real    15.539998 user    0.020000 sys
+;;  5.607738 real    16.133331 user    0.020000 sys
+
 
 
 
