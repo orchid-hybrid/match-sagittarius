@@ -1,4 +1,4 @@
-(define-library (match)
+(define-library (match match)
 
   (import (scheme base)
   	  (scheme cxr)

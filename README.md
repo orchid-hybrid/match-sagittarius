@@ -24,3 +24,7 @@ To get good indentation for this you can add the command to `.emacs`:
 ```
 (put 'match 'scheme-indent-function 1)
 ```
+
+# How to use on Sagittarius
+
+See `example.scm`. This uses shell trampline.
