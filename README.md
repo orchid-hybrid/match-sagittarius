@@ -27,4 +27,4 @@ To get good indentation for this you can add the command to `.emacs`:
 
 # How to use on Sagittarius
 
-See `example.scm`. This uses shell trampline.
+See `example.scm`. This uses shell trampoline.
