@@ -1,6 +1,7 @@
-(map load '("trie.sld" "compile-pattern.sld" "interpret-tree.sld" "match.sld"))
-
-(import (time) (match) (rename (match pattern) (match m:match))
+;;(map load '("trie.sld" "compile-pattern.sld" "interpret-tree.sld" "match.sld"))
+(add-load-path ".")
+(add-load-suffix ".sld")
+(import (time) (match) (rename (match match) (match m:match))
         ;; (math random)
         (srfi :1))
 
