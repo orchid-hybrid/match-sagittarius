@@ -3,6 +3,7 @@
 ;; <pat>  ::= <var>
 ;;          | `<qpat>            ; (quasiquote <qpat>)
 ;;          | '<s-exp>           ; (quote <exp>)
+;;          | (<prediate?> <var>)
 ;;
 ;; <qpat> ::= <sym> | ()
 ;;          | ,<pat>             ; (unquote <qpat>)
@@ -12,8 +13,9 @@
 (define (duad? s) (and (list? s) (= 2 (length s))))
 (define (quoted? s) (and (duad? s) (eq? 'quote (car s))))
 (define (quasiquoted? s) (and (duad? s) (eq? 'quasiquote (car s))))
+(define (predicated-var? s) (and (duad? s) (not (quoted? s)) (not (quasiquoted? s)))) ;; so this isn't properly hygienic..
 (define (unquoted? s) (and (duad? s) (eq? 'unquote (car s))))
-(define (atomic? s) (or (symbol? s) (null? s)))
+(define (atomic? s) (or (symbol? s) (char? s) (null? s)))
 
 
 ;; compile-pattern turns a <pat> into a list of matching instructions
@@ -29,6 +31,7 @@
   (cond ((var? pat) (list `(bind ,pat)))
 	((quasiquoted? pat) (compile-quasipattern (cadr pat)))
 	((quoted? pat) (list `(compare-equal? ',(cadr pat))))
+        ((predicated-var? pat) (list `(bind ,(cadr pat)) `(guard ,pat)))
 	(else (error "Invalid pattern"))))
 
 (define (compile-quasipattern qpat)

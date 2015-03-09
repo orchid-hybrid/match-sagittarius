@@ -1,5 +1,5 @@
-(map load '("trie.sld" "compile-pattern.sld" "interpret-tree.sld" "match.sld"))
-(import (match))
+(map load '("match/trie.sld" "match/compile-pattern.sld" "match/interpret-tree.sld" "match/match.sld"))
+(import (match match))
 
 (match 'x ('x 'yes) (else 'no)) ;=> yes
 
@@ -84,3 +84,18 @@
 
   ((int '(lambda l (display l)) env0) 1 2 3) ; (1 2 3)
   )
+
+
+
+;;; guard tests
+
+(define (g t)
+  (match t
+    (`(,(symbol? x) ,(number? y)) (list 'symbol-number x y))
+    (`(,(number? x) ,(symbol? y)) (list 'number-symbol x y))
+    (else 'neither)))
+
+(g '(3 x)) ;=> (number-symbol 3 x)
+(g '(y 5)) ;=> (symbol-number y 5)
+(g '(e e)) ;=> neither
+

@@ -2,7 +2,9 @@
 
 This library implements a pattern matcher macro `match` in R7RS scheme + er-macro-transformer (which is provided by sagittarius).
 
-The pattern matcher is based on compiling patterns into instruction sequences that get merged into a tree as an optimization. The pattern syntax is quasiquoted forms.
+The pattern matcher is based on compiling patterns into instruction sequences that get merged into a tree as an optimization. The pattern syntax is quasiquoted forms.. with an additional way to add guard predicates. See compile-pattern.scm for the definition.
+
+It is easy to add new pattern syntax by changing compile patterns and then implementing any new VM instructions to interpret-tree.
 
 I was very happy to see it benchmarked on [時の羅針盤＠blog](http://compassoftime.blogspot.co.uk/2015/02/benchmark-of-2-match-libraries.html). Thank you!
 
@@ -28,3 +30,11 @@ To get good indentation for this you can add the command to `.emacs`:
 # How to use on Sagittarius
 
 See `example.scm`. This uses shell trampoline.
+
+Here is the way to use it in the repl
+
+```
+$ rlwrap sagittarius -L. -S.sld
+sash> (import (match match))
+#<unspecified>
+```
